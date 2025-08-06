@@ -1,33 +1,5 @@
-pub use convert_case::{Case, Casing};
 
-pub fn expected_variable(compared: &str, expected: &str) -> Option<String> {
-    // Check if the compared string is in camel case or snake case
-    let is_camel = compared == compared.to_case(Case::Camel);
-    let is_snake = compared == compared.to_case(Case::Snake);
-    if !is_camel && !is_snake {
-        return None;
-    }
-
-    // Convert both strings to lowercase for case-insensitive comparison
-    let compared_lower = compared.to_lowercase();
-    let expected_lower = expected.to_lowercase();
-
-    // Calculate edit distance
-    let edit_dist = edit_distance(&compared_lower, &expected_lower);
-    let expected_len = expected_lower.len() as f64;
-    let similarity = (1.0 - (edit_dist as f64 / expected_len)) * 100.0;
-
-    // Round to nearest integer
-    let similarity_rounded = similarity.round() as u32;
-
-    // Check if similarity is more than 50%
-    if similarity_rounded > 50 {
-        Some(format!("{}%", similarity_rounded))
-    } else {
-        None
-    }
-}
-
+/// Calculates the edit distance (Levenshtein distance) between two strings
 pub fn edit_distance(source: &str, target: &str) -> usize {
     let len1 = source.chars().count();
     let len2 = target.chars().count();
@@ -52,4 +24,81 @@ pub fn edit_distance(source: &str, target: &str) -> usize {
         }
     }
     dp[len1][len2]
+}
+
+/// Checks if a string is in snake case
+fn is_snake_case(s: &str) -> bool {
+    s.chars().all(|c| c.is_lowercase() || c == '_')
+}
+
+/// Checks if a string is in camel case
+fn is_camel_case(s: &str) -> bool {
+    if s.is_empty() {
+        return false;
+    }
+    
+    // Must start with lowercase letter
+    if !s.chars().next().unwrap().is_lowercase() {
+        return false;
+    }
+    
+    // Should not contain underscores or spaces
+    if s.contains('_') || s.contains(' ') {
+        return false;
+    }
+    
+    // Must contain at least one uppercase letter (to distinguish from all lowercase)
+    s.chars().any(|c| c.is_uppercase())
+}
+
+/// Converts camelCase to snake_case manually
+fn camel_to_snake(s: &str) -> String {
+    let mut result = String::new();
+    let mut prev_was_lower = false;
+    
+    for c in s.chars() {
+        if c.is_uppercase() && prev_was_lower {
+            result.push('_');
+        }
+        result.push(c.to_lowercase().next().unwrap());
+        prev_was_lower = c.is_lowercase();
+    }
+    
+    result
+}
+
+/// Compares a string to an expected string and returns similarity percentage if > 50%
+pub fn expected_variable(a: &str, b: &str) -> Option<String> {
+    // Check for spaces - if either contains spaces, return None
+    if a.contains(' ') || b.contains(' ') {
+        return None;
+    }
+    
+    // Check if the compared string (a) is in camel case or snake case
+    if !is_camel_case(a) && !is_snake_case(a) {
+        return None;
+    }
+    
+    // Convert both to snake_case for comparison
+    let snake_a = if is_camel_case(a) {
+        camel_to_snake(a)
+    } else {
+        a.to_lowercase()
+    };
+    
+    let snake_b = if is_camel_case(b) {
+        camel_to_snake(b)
+    } else {
+        b.to_lowercase()
+    };
+    
+    let distance = edit_distance(&snake_a, &snake_b);
+    let similarity = 1.0 - (distance as f64 / b.len() as f64);
+    let res = (similarity * 100.0).round();
+    
+    if res > 50.0 {
+        Some(format!("{}%", res as u32))
+    } else {
+        None
+    }
 }
