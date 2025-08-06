@@ -43,27 +43,29 @@ pub fn nbr_of_employees(mall: &Mall) -> usize {
 }
 
 pub fn check_for_securities(mall: &mut Mall, guards: HashMap<String, Guard>) {
-    // Calculate total floor size
-    let total_size: u64 = mall.floors.values()
-        .flat_map(|floor| floor.stores.values())
-        .map(|store| store.square_meters)
+    // Calculate total floor space
+    let total_square_meters: u64 = mall.floors
+        .values()
+        .flat_map(|floor| &floor.stores)
+        .map(|(_, store)| store.square_meters)
         .sum();
-
-    // Calculate required number of guards (rounding up)
-    let required_guards = ((total_size + 199) / 200) as usize;
+    
+    // Calculate required number of guards (1 guard per 200 square meters)
+    let required_guards = (total_square_meters as f64 / 200.0).ceil() as usize;
     let current_guards = mall.guards.len();
-
-    // Only proceed if we need more guards
-    if current_guards >= required_guards {
-        return;
-    }
-
-    // Calculate how many guards we need to add
-    let needed = required_guards - current_guards;
-
-    // Add only the needed guards
-    for (name, guard) in guards.into_iter().take(needed) {
-        mall.guards.insert(name, guard);
+    
+    // If we need more guards, add them from the provided map
+    if current_guards < required_guards {
+        let guards_to_add = required_guards - current_guards;
+        let mut guards_iter = guards.into_iter();
+        
+        for _ in 0..guards_to_add {
+            if let Some((name, guard)) = guards_iter.next() {
+                mall.guards.insert(name, guard);
+            } else {
+                break; // No more guards available to add
+            }
+        }
     }
 }
 
