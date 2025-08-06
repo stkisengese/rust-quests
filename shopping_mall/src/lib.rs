@@ -30,3 +30,14 @@ pub fn highest_paid_employee(mall: &Mall) -> Vec<(String, Employee)> {
     }
     highest_paid
 }
+
+pub fn nbr_of_employees(mall: &Mall) -> usize {
+    let employee_count: usize = mall.floors   
+        .values()
+        .flat_map(|floor| floor.stores.values())
+        .map(|store| store.employees.len())
+        .sum();
+
+    let guard_count: usize = mall.guards.len();
+    employee_count + guard_count
+}
