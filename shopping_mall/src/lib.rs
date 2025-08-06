@@ -53,12 +53,17 @@ pub fn check_for_securities(mall: &mut Mall, guards: HashMap<String, Guard>) {
     let required_guards = ((total_size + 199) / 200) as usize;
     let current_guards = mall.guards.len();
 
-    // Add guards if needed
-    if current_guards < required_guards {
-        let needed = required_guards - current_guards;
-        for (name, guard) in guards.into_iter().take(needed) {
-            mall.guards.insert(name, guard);
-        }
+    // Only proceed if we need more guards
+    if current_guards >= required_guards {
+        return;
+    }
+
+    // Calculate how many guards we need to add
+    let needed = required_guards - current_guards;
+
+    // Add only the needed guards
+    for (name, guard) in guards.into_iter().take(needed) {
+        mall.guards.insert(name, guard);
     }
 }
 
