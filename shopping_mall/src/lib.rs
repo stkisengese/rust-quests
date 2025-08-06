@@ -1,14 +1,12 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+pub mod mall;
+pub use mall::*;
+use std::collections::HashMap;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+pub fn biggest_store(mall: &Mall) -> Store {
+    mall.floors
+        .values()
+        .flat_map(|floor| floor.stores.values())
+        .max_by_key(|store| store.square_meters)
+        .cloned()
+        .expect("Mall should have at least one store")
 }
