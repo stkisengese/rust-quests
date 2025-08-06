@@ -28,14 +28,14 @@ pub struct Form {
 impl Form {
     pub fn validate(&self) -> Result<(), FormError> {
         if self.name.is_empty() {
-            return Err(FormError::new("name", self.name.clone(), "Username is empty"));
+            return Err(FormError::new("name", self.name.clone(), "Username is empty".to_string()));
         }
 
         if self.password.len() < 8 {
             return Err(FormError::new(
-                "password",
+                "password".to_string(),
                 self.password.clone(),
-                "Password should be at least 8 characters long",
+                "Password should be at least 8 characters long".to_string(),
             ));
         }
 
@@ -45,9 +45,9 @@ impl Form {
 
         if !(has_alpha && has_digit && has_symbol) {
             return Err(FormError::new(
-                "password",
+                "password".to_string(),
                 self.password.clone(),
-                "Password should be a combination of ASCII numbers, letters and symbols",
+                "Password should be a combination of ASCII numbers, letters and symbols".to_string(),
             ));
         }
 
