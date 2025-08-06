@@ -2,19 +2,19 @@ use chrono::Local;
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct FormError {
-    pub form_values: (String, String),
+    pub form_values: (&'static str, String),
     pub date: String,
-    pub err: String,
+    pub err: &'static str,
 }
 
 impl FormError {
-    pub fn new(field_name: &str, field_value: String, err: &str) -> Self {
+    pub fn new(field_name: &'static str, field_value: String, err: &'static str) -> Self {
         let current_time = Local::now();
         let formatted_date = current_time.format("%Y-%m-%d %H:%M:%S").to_string();
         FormError {
-            form_values: (field_name.to_string(), field_value),
+            form_values: (field_name, field_value),
             date: formatted_date,
-            err: err.to_string(),
+            err: err,
         }
     }
 }
