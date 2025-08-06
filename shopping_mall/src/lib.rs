@@ -2,18 +2,18 @@ pub mod mall;
 pub use mall::*;
 use std::collections::HashMap;
 
-pub fn biggest_store(mall: &Mall) -> Store {
+pub fn biggest_store(mall: &Mall) -> (&str, &Store) {
     mall.floors
         .values()
-        .flat_map(|floor| floor.stores.values())
-        .max_by_key(|store| store.square_meters)
-        .cloned()
+        .flat_map(|floor| &floor.stores)
+        .max_by_key(|(_, store)| store.square_meters)
+        .map(|(name, store)| (name.as_str(), store))
         .expect("Mall should have at least one store")
 }
 
-pub fn highest_paid_employee(mall: &Mall) -> Vec<(String, Employee)> {
-    let mut highest_salary = 0.0;
-    let mut highest_paid: Vec<(String, Employee)> = Vec::new();
+pub fn highest_paid_employee(mall: &Mall) -> Vec<(&str, Employee)> {
+    let mut highest_salary = f64::NEG_INFINITY;
+    let mut highest_paid: Vec<(&str, Employee)> = Vec::new();
 
     for floor in mall.floors.values() {
         for store in floor.stores.values() {
@@ -23,7 +23,7 @@ pub fn highest_paid_employee(mall: &Mall) -> Vec<(String, Employee)> {
                     highest_paid.clear();
                 }
                 if employee.salary == highest_salary {
-                    highest_paid.push((name.clone(), *employee));
+                    highest_paid.push((name.as_str(), *employee));
                 }
             }
         }
