@@ -61,3 +61,20 @@ pub fn check_for_securities(mall: &mut Mall, guards: HashMap<String, Guard>) {
         }
     }
 }
+
+pub fn cut_or_raise(mall: &mut Mall) {
+    mall.floors
+        .values_mut()
+        .flat_map(|floor| floor.stores.values_mut())
+        .flat_map(|store| store.employees.values_mut())
+        .for_each(|employee| {
+            let working_hours = employee.working_hours.1 - employee.working_hours.0;
+            let adjustment = employee.salary * 0.1;
+
+            if working_hours < 10 {
+                employee.salary -= adjustment;
+            } else if working_hours >= 10 {
+                employee.salary += adjustment;
+            }
+        })
+}
