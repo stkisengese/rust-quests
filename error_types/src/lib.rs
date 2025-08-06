@@ -1,5 +1,4 @@
 use chrono::Local;
-use std::fmt;
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct FormError {
