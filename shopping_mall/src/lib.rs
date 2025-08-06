@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 pub mod mall;
-pub use mall::{Mall, Store, Employee, Guard};
+pub use mall::{Mall, Store, Employee, Guard, Floor};
 
 /// Returns the Store with the most square_meters
 pub fn biggest_store(mall: &Mall) -> (&String, &Store) {
