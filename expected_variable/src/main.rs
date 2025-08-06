@@ -1,4 +1,5 @@
-use expected_variable::*;
+// pub use expected_variable::*;
+pub use edit_distance::expected_variable;
 
 fn main() {
     println!(
