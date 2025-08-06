@@ -1,4 +1,4 @@
-use convert_case::{Case, Casing};
+pub use convert_case::{Case, Casing};
 
 pub fn expected_variable(compared: &str, expected: &str) -> Option<String> {
     // Check if the compared string is in camel case or snake case
