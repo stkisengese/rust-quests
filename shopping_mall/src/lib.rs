@@ -42,7 +42,7 @@ pub fn nbr_of_employees(mall: &Mall) -> usize {
     employee_count + guard_count
 }
 
-pub fn check_for_securities(mall: &mut Mall, guards: HashMap<String, Guard>) {
+pub fn check_for_securitkies(mall: &mut Mall, guards: HashMap<String, Guard>) {
     // Calculate total floor space
     let total_square_meters: u64 = mall.floors
         .values()
