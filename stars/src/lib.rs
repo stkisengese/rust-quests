@@ -1,7 +1,4 @@
 pub fn stars(n: u32) -> String {
-    if n == 0 {
-        return String::new();
-    }
     "*".repeat(2usize.pow(n))
 }
 
