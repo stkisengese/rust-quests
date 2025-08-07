@@ -17,7 +17,7 @@
 // Q, Z 	10
 
 pub fn score(word: &str) -> u64 {
-    let mut scores =[0u8; 126];
+    let mut scores =[0u8; 256];
     for c in "aeioulnrst".chars() {
         scores[c as usize] = 1;
     }
