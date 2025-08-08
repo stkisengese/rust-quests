@@ -15,7 +15,25 @@
 //     154 returns false, because: 154 != 1^3 + 5^3 + 4^3 = 1 + 125 + 64 = 190
 
 pub fn number_logic(num: u32) -> bool {
+    if num == 0 {
+        return false; // 0 is not considered a valid case
+    }
 
+    let mut digits: Vec<u32> = Vec::new();
+    let mut n = num;
+
+    while n > 0 {
+        digits.push(n % 10);
+        n /= 10;
+    }
+    
+    let num_digits = digits.len() as u32;
+    
+    let sum: u32 = digits.iter()
+        .map(|&d| d.pow(num_digits))
+        .sum();
+    
+    sum == num
 }
 
 #[cfg(test)]
