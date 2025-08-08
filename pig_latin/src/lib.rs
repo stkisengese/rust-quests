@@ -14,42 +14,43 @@
 
 
 pub fn pig_latin(text: &str) -> String {
-    let mut chars = text.chars().peekable();
-    
-    match chars.peek().cloned() {
-        Some(c) if is_vowel(c.to_ascii_lowercase()) => {
-            format!("{}ay", chars.collect::<String>())
-        },
-        Some(_) => {
-            let mut consonants = String::new();
-            let first_char = chars.next().unwrap();
-            consonants.push(first_char);
-            let saw_q = first_char.to_ascii_lowercase() == 'q';
-            let mut after_qu = false;
-
-            while let Some(&c) = chars.peek() {
-                let lower_chars = c.to_ascii_lowercase();
-                if !is_vowel(lower_chars) || (saw_q && lower_chars == 'u') {
-                    consonants.push(chars.next().unwrap());
-                    if saw_q && lower_chars != 'u' {
-                        after_qu = true;
-                    }
-                } else {
-                    if after_qu {
-                        break; // Stop at the first vowel after "qu"
-                    }
-                    break; // Stop at the first vowel
-                }
-
-            }
-            format!("{}{}ay", chars.collect::<String>(), consonants)
-        }
-        None => String::new(),
+    if text.is_empty() {
+        return String::new();
     }
-}
 
+    let text_chars: Vec<char> = text.chars().collect();
+    let mut consonants = Vec::new();
+    let len = text_chars.len();
+
+    while !is_vowel(text_chars[consonants.len()]) {
+        consonants.push(text_chars[consonants.len()]);
+
+    }
+    println!("consonants: {:?}", consonants.len());
+    println!("text_chars: {:?}", text_chars[1]);
+
+    if consonants.len() >= 2 && consonants[1] == 'q' && text_chars[2] == 'u' {
+        consonants.push('u');
+    }
+    println!("consonants: {:?}", consonants);
+    if consonants.is_empty() {
+        return format!("{}ay", text);
+    }
+
+    let mut result = String::new();
+    for i in consonants.len()..len {
+        result.push(text_chars[i]);
+    }
+    println!("result: {:?}", result);
+
+    for c in consonants {
+        result.push(c);
+    }
+    result.push_str("ay");
+    result
+}
 fn is_vowel(c: char) -> bool {
-    matches!(c, 'a' | 'e' | 'i' | 'o' | 'u')
+    matches!(c.to_ascii_lowercase(), 'a' | 'e' | 'i' | 'o' | 'u' )
 }
 
 
