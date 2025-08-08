@@ -23,7 +23,26 @@
 // ------------------------------------------
 
 pub fn scytale_cipher(message: &str, i: usize) -> String {
-    todo!()
+    if i == 0 || message.is_empty() {
+        return String::new();
+    }
+
+    let message: Vec<char> = message.chars().collect();
+    let len = message.len();
+    let cols = (len + i - 1) / i; // Calculate the number of columns needed
+    let mut result = String::with_capacity(len);
+
+    for col in 0..cols {
+        for row in 0..i {
+            let index = row * cols + col;
+            if index < len {
+                result.push(message[index]);
+            } else {
+                result.push(' '); // Fill with space if index is out of bounds
+            }
+        }
+    }
+    result
 }
 
 #[cfg(test)]
@@ -33,7 +52,8 @@ mod tests {
     #[test]
     fn it_works() {
         let result = scytale_cipher("scytale Code", 6);
-        let result2 = scytale_cipher("scytale Code", 8));
-        assert_eq!(result, 4);
+        let result2 = scytale_cipher("scytale Code", 8);
+        assert_eq!(result, "sec yCtoadle");
+        assert_eq!(result2, "sCcoydtea l e");
     }
 }
