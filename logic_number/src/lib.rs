@@ -16,7 +16,7 @@
 
 pub fn number_logic(num: u32) -> bool {
     if num == 0 {
-        return false; // 0 is not considered a valid case
+        return true;
     }
 
     let mut digits: Vec<u32> = Vec::new();
@@ -62,5 +62,11 @@ mod tests {
     fn it_works_with_false_again() {
         let result = number_logic(154);
         assert_eq!(result, false);
+    }
+
+    #[test]
+    fn it_works_with_zero() {
+        let result = number_logic(0);
+        assert_eq!(result, true); 
     }
 }
