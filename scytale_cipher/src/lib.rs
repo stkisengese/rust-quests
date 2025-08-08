@@ -32,9 +32,9 @@ pub fn scytale_cipher(message: &str, i: usize) -> String {
     let cols = (len + i - 1) / i; // Calculate the number of columns needed
     let mut result = String::with_capacity(len);
 
-    for col in 0..cols {
-        for row in 0..i {
-            let index = row * cols + col;
+    for col in 0..i {
+        for row in 0.. cols {
+            let index = row * i + col;
             if index < len {
                 result.push(message[index]);
             } else {
@@ -42,7 +42,7 @@ pub fn scytale_cipher(message: &str, i: usize) -> String {
             }
         }
     }
-    result
+    result.trim().to_string() // Trim trailing spaces
 }
 
 #[cfg(test)]
