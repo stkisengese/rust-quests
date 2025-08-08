@@ -14,20 +14,23 @@
 
 
 pub fn pig_latin(text: &str) -> String {
-    let mut chars = text.chars();
-
-    match &chars.next() {
-        Some(c) if is_vowel(c.to_ascii_lowercase()) => { format!("{}ay", text) },
-        Some(first) => {
+    let mut chars = text.chars().peekable();
+    
+    match chars.peek().cloned() {
+        Some(c) if is_vowel(c.to_ascii_lowercase()) => {
+            format!("{}ay", chars.collect::<String>())
+        },
+        Some(_) => {
             let mut consonants = String::new();
-            consonants.push(*first);
-             let saw_q = first.to_ascii_lowercase() == 'q';
-             let mut after_qu = false;
+            let first_char = chars.next().unwrap();
+            consonants.push(first_char);
+            let saw_q = first_char.to_ascii_lowercase() == 'q';
+            let mut after_qu = false;
 
-            while let Some(c) = chars.next() {
+            while let Some(&c) = chars.peek() {
                 let lower_chars = c.to_ascii_lowercase();
                 if !is_vowel(lower_chars) || (saw_q && lower_chars == 'u') {
-                    consonants.push(c);
+                    consonants.push(chars.next().unwrap());
                     if saw_q && lower_chars != 'u' {
                         after_qu = true;
                     }
@@ -39,9 +42,9 @@ pub fn pig_latin(text: &str) -> String {
                 }
 
             }
-            format!("{}{}ay", chars.as_str(), consonants)
+            format!("{}{}ay", chars.collect::<String>(), consonants)
         }
-        None => String::from(""),
+        None => String::new(),
     }
 }
 
