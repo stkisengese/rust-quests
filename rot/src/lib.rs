@@ -20,7 +20,18 @@
 // be left unchanged.
 
 pub fn rotate(input: &str, key: i8) -> String {
-    todo!()
+    input.chars().map(|c| rotate_char(c, key)).collect::<String>()
+}
+
+fn rotate_char(c: char, key: i8) -> char {
+    if c.is_ascii_alphabetic() {
+        let base = if c.is_ascii_lowercase() { b'a' } else { b'A' } as i16;
+        let offset = (c as i16 - base + key as i16) % 26;
+        let rotated: u8 = if offset >= 0 { base + offset } else { base + offset + 26 } as u8;
+        rotated as char
+    } else {
+        c // Non-alphabetic characters remain unchanged
+    }
 }
 
 #[cfg(test)]
@@ -31,7 +42,13 @@ mod tests {
     #[test]
     fn it_works() {
         let result = rotate("a", 26);
-        assert_eq!(result, a);
+        let result2 =  rotate("Mtb vznhpqd ifky ozrunsl ejgwfx ajc", 5);
+        let result3 = rotate("Testing", -14);
+        let result4 = rotate("a", -1);
+        assert_eq!(result, "a");
+        assert_eq!(result2, "Ryg aesmuvi nkpd tewzsxq jolbkc foh");
+        assert_eq!(result3, "Fqefuzs");
+        assert_eq!(result4, "z");
     }
 
     #[test]
@@ -43,7 +60,7 @@ mod tests {
     #[test]
     fn test_3() {
         let result = rotate("MISS", 5);
-        assert_eq!(result, "RNXX");Uryyb, Jbeyq!
+        assert_eq!(result, "RNXX");
     }
 
     #[test]
