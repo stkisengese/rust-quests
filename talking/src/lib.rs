@@ -12,7 +12,29 @@
 //     It answers "Interesting" to anything else.
 
 pub fn talking(text: &str) -> &str {
-    todo!()
+    if text.trim().is_empty() {
+        return "Just say something!";
+    }
+
+    if is_yelling(text) {
+        if is_question(text) {
+            return "Quiet, I am thinking!";
+        }
+        return "There is no need to yell, calm down!";
+    } else if is_question(text) {
+        return "Sure.";
+    } else {
+        return "Interesting";
+    }
+}
+
+fn  is_question(text: &str) -> bool {
+    text.trim().ends_with('?')
+}
+
+fn is_yelling(text: &str) -> bool {
+    text.chars().any(|c| c.is_alphabetic()) && 
+    text.chars().all(|c| c.is_uppercase() || !c.is_alphabetic())
 }
 
 #[cfg(test)]
@@ -24,7 +46,7 @@ mod tests {
         let result =  talking("JUST DO IT!");
         assert_eq!(result, "There is no need to yell, calm down!");
     }
-    
+
     #[test]
     fn it_works_with_question() {
         let result = talking("Hello how are you?");
