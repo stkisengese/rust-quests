@@ -20,6 +20,7 @@ const UNITS: [&str; 20] = [
     "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen",
     "seventeen", "eighteen", "nineteen",
 ];
+
 const TENS: [&str; 10] = [
     "", "", "twenty", "thirty", "forty", "fifty",
     "sixty", "seventy", "eighty", "ninety",
@@ -42,9 +43,15 @@ pub fn spell(n: u32) -> String {
                 u => format!("{} hundred {}", hundreds, spell(u)),
             }
         },
-        1000..=999_999 => format!("{} thousand {}", spell(n/1000), spell(n % 1000)),
+        1000..=999_999 => {
+            let thousands = spell(n / 1000);
+            match n % 1000 {
+                0 => format!("{} thousand", thousands),
+                u => format!("{} thousand {}", thousands, spell(u)),
+            }
+        },
         1_000_000 => "one million".to_string(),
-        _ => unreachable!(), // Since we only handle up to one million
+        _ => unreachable!(),
     }
 }
 
@@ -56,7 +63,7 @@ mod tests {
     fn it_works() {
         assert_eq!(spell(348), "three hundred forty-eight");
         assert_eq!(spell(1000000), "one million");
-        assert_eq!(spell(101), "one hundred one");
+        assert_eq!(spell(6000), "six thousand");
         assert_eq!(spell(999999), "nine hundred ninety-nine thousand nine hundred ninety-nine");
         assert_eq!(spell(0), "zero");
     }
