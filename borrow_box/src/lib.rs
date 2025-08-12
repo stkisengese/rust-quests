@@ -37,7 +37,7 @@ impl GameSession {
     }
 
     pub fn delete(self) -> String {
-        format!("game deleted: id -> 0", self.id)
+        format!("game deleted: id -> {}", self.id)
     }
 }
 
