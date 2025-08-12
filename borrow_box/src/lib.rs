@@ -16,15 +16,16 @@ impl GameSession {
         }
     }
 
-    pub fn read_winner(&self) -> Option<&(String, u32)> {
-        let threshold = (self.nb_games / 2) + 1;
-        
-        if self.p1.1 >= threshold {
-            Some(&self.p1)
-        } else if self.p2.1 >= threshold {
-            Some(&self.p2)
+    pub fn read_winner(&self) -> Option<(String, u32)> {
+        let (p1_name, p1_score) = &self.p1;
+        let (p2_name, p2_score) = &self.p2;
+
+        if p1_score > p2_score {
+            Some((p1_name.clone(), *p1_score))
+        } else if p2_score > p1_score {
+            Some((p2_name.clone(), *p2_score))
         } else {
-            None
+            None // No winner yet
         }
     }
 
