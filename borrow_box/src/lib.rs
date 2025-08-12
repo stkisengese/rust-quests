@@ -18,33 +18,41 @@ impl GameSession {
 
     pub fn read_winner(&self) -> Option<&(String, u32)> {
         let threshold = (self.nb_games / 2) + 1;
-
+        
         if self.p1.1 >= threshold {
             Some(&self.p1)
         } else if self.p2.1 >= threshold {
             Some(&self.p2)
         } else {
-            None // It's a draw
+            None
         }
     }
 
     pub fn update_score(&mut self, user_name: &str) {
-          // Check total games played so far
+        // Determine the winning threshold
+        let threshold = (self.nb_games / 2) + 1;
+        
+        // Don't allow updates if someone has already reached the winning threshold
+        if self.p1.1 >= threshold || self.p2.1 >= threshold {
+            return;
+        }
+        
+        // Don't allow updates if all games have been played
         let total_played = self.p1.1 + self.p2.1;
         if total_played >= self.nb_games {
             return;
         }
 
-        // Update score for the player
+        // Update the score for the matching player
         if self.p1.0 == user_name {
             self.p1.1 += 1;
         } else if self.p2.0 == user_name {
             self.p2.1 += 1;
         }
+        // If user_name doesn't match either player, ignore the update
     }
 
     pub fn delete(self) -> String {
         format!("game deleted: id -> {}", self.id)
     }
 }
-
