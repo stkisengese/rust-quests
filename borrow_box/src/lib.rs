@@ -17,11 +17,11 @@ impl GameSession {
     }
 
     pub fn read_winner(&self) -> Option<&(String, u32)> {
-        let threshold = self.nb_games / 2;
+        let threshold = (self.nb_games / 2) + 1;
 
-        if self.p1.1 > threshold {
+        if self.p1.1 >= threshold {
             Some(&self.p1)
-        } else if self.p2.1 > threshold {
+        } else if self.p2.1 >= threshold {
             Some(&self.p2)
         } else {
             None // It's a draw
