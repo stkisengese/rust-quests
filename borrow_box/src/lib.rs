@@ -16,16 +16,15 @@ impl GameSession {
         }
     }
 
-    pub fn read_winner(&self) -> Option<(String, u32)> {
-        let (p1_name, p1_score) = &self.p1;
-        let (p2_name, p2_score) = &self.p2;
+    pub fn read_winner(&self) -> Option<&(String, u32)> {
+        let threshold = (self.nb_games / 2) + 1;
 
-        if p1_score > p2_score {
-            Some((p1_name.clone(), *p1_score))
-        } else if p2_score > p1_score {
-            Some((p2_name.clone(), *p2_score))
+        if self.p1.1 >= threshold {
+            Some(&self.p1)
+        } else if self.p2.1 >= threshold {
+            Some(&self.p2)
         } else {
-            None // No winner yet
+            None
         }
     }
 
@@ -50,7 +49,6 @@ impl GameSession {
         } else if self.p2.0 == user_name {
             self.p2.1 += 1;
         }
-        // If user_name doesn't match either player, ignore the update
     }
 
     pub fn delete(self) -> String {
