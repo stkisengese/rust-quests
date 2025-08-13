@@ -29,13 +29,12 @@ impl ThreadPool {
     }
 
     pub fn drop_thread(&self, id: usize) {
-        if id >= self.thread_len() {
-            panic!("Thread ID out of bounds");
+        let mut states = self.states.borrow_mut();
+        if states[id] {
+            panic!("{} is already dropped", id);
         }
-        if !self.is_dropped(id) {
-            self.states.borrow_mut()[id] = true;
-            self.drops.set(self.drops.get() + 1);
-        }
+        states[id] = true;
+        self.drops.set(self.drops.get() + 1);
     }
 }
 
