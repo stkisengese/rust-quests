@@ -24,7 +24,7 @@ pub type Link = Option<Box<Worker>>;
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct Worker {
-    pub role: String,
+    pub role: Role,
     pub name: String,
     pub next: Link,
 }
@@ -36,7 +36,7 @@ impl WorkEnvironment {
 
     pub fn add_worker(&mut self, name: &str, role: &str) {
         let new_worker = Worker {
-            role: role.to_string(),
+            role: Role::from(role),
             name: name.to_string(),
             next: self.grade.take(),
         };
@@ -53,7 +53,7 @@ impl WorkEnvironment {
 
     pub fn last_worker(&self) -> Option<(String, Role)> {
         self.grade.as_ref().map(|worker| {
-            (worker.name.clone(), Role::from(worker.role.as_str()))
+            (worker.name.clone(), worker.role.clone())
         })
     }
 }
