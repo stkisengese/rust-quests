@@ -30,17 +30,21 @@ impl ThreadPool {
 
 #[derive(Debug)]
 pub struct Thread {
-    // expected public fields
+    pub pid: usize,
+    pub cmd: String,
+    pub parent: &'a ThreadPool,
 }
 
 impl<'a> Thread<'a> {
     pub fn new(p: usize, c: String, t: &'a ThreadPool) -> Self {
-        todo!()
+        Thread { pid: p, cmd: c, parent: t }
     }
 
     pub fn skill(self) {
-        todo!()
+        drop(self);
     }
 }
 
-impl Drop for Thread<'_> {}
+impl Drop for Thread<'_> {
+    self.parent.drop_thread(self.pid);
+}
