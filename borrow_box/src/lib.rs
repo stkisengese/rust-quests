@@ -37,12 +37,6 @@ impl GameSession {
             return;
         }
         
-        // Don't allow updates if all games have been played
-        let total_played = self.p1.1 + self.p2.1;
-        if total_played >= self.nb_games {
-            return;
-        }
-
         // Update the score for the matching player
         if self.p1.0 == user_name {
             self.p1.1 += 1;
