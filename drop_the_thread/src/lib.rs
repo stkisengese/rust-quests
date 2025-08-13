@@ -1,6 +1,6 @@
 use std::cell::{Cell, RefCell};
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct ThreadPool {
     pub drops: Cell<usize>,
     pub states: RefCell<Vec<bool>>
@@ -8,28 +8,39 @@ pub struct ThreadPool {
 
 impl ThreadPool {
     pub fn new() -> Self {
-        todo!()
+        ThreadPool::default()
     }
 
     pub fn new_thread(&self, c: String) -> (usize, Thread) {
-        todo!()
+        let pid = self.thread_len();
+        self.states.borrow_mut().push(false);
+        (pid, Thread::new(pid, c, self))
     }
 
     pub fn thread_len(&self) -> usize {
-        todo!()
+        self.states.borrow().len()
     }
 
     pub fn is_dropped(&self, id: usize) -> bool {
-        todo!()
+        if id >= self.thread_len() {
+            panic!("Thread ID out of bounds");
+        }
+        self.states.borrow()[id]
     }
 
     pub fn drop_thread(&self, id: usize) {
-        todo!()
+        if id >= self.thread_len() {
+            panic!("Thread ID out of bounds");
+        }
+        if !self.is_dropped(id) {
+            self.states.borrow_mut()[id] = true;
+            self.drops.set(self.drops.get() + 1);
+        }
     }
 }
 
 #[derive(Debug)]
-pub struct Thread {
+pub struct Thread<'a> {
     pub pid: usize,
     pub cmd: String,
     pub parent: &'a ThreadPool,
@@ -46,5 +57,7 @@ impl<'a> Thread<'a> {
 }
 
 impl Drop for Thread<'_> {
-    self.parent.drop_thread(self.pid);
+    fn drop(&mut self) {
+        self.parent.drop_thread(self.pid);
+    }
 }
