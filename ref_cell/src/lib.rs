@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-// pub mod messenger;
+pub mod messenger;
 
 pub struct Tracker {
     pub messages: RefCell<Vec<String>>,
