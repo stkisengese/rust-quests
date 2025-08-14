@@ -14,7 +14,7 @@ pub struct Meat { pub weight_in_kg: f64, pub fat_content: f64 }
 
 
 impl Player {
-    fn _eat<T: Food>(&mut self, food: T) {
+    fn eat<T: Food>(&mut self, food: T) {
         self.strength += food.gives();
     }
 }
