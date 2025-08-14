@@ -39,6 +39,20 @@ use std::fmt::{self, Debug};
 impl Debug for BloodType {
 }
 
+// Helper function to get all possible blood types
+fn all_blood_types() -> Vec<BloodType> {
+    vec![
+        BloodType { antigen: Antigen::A, rh_factor: RhFactor::Positive },
+        BloodType { antigen: Antigen::A, rh_factor: RhFactor::Negative },
+        BloodType { antigen: Antigen::AB, rh_factor: RhFactor::Positive },
+        BloodType { antigen: Antigen::AB, rh_factor: RhFactor::Negative },
+        BloodType { antigen: Antigen::B, rh_factor: RhFactor::Positive },
+        BloodType { antigen: Antigen::B, rh_factor: RhFactor::Negative },
+        BloodType { antigen: Antigen::O, rh_factor: RhFactor::Positive },
+        BloodType { antigen: Antigen::O, rh_factor: RhFactor::Negative },
+    ]
+}
+
 impl BloodType {
 	pub fn can_receive_from(&self, other: &Self) -> bool {
         (match self.antigen {
@@ -52,9 +66,11 @@ impl BloodType {
         }
 	}
 
-	pub fn donors(&self) -> Vec<Self> {
-        
-	}
+	 pub fn donors(&self) -> Vec<Self> {
+        all_blood_types().into_iter().filter(|donor| self.can_receive_from(donor)).collect()
+    }
 
-	pub fn recipients(&self) -> Vec<BloodType> {}
+    pub fn recipients(&self) -> Vec<BloodType> {
+        all_blood_types().into_iter().filter(|recipient| recipient.can_receive_from(self)).collect()
+    }
 }
