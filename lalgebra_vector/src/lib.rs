@@ -32,7 +32,7 @@ impl<T: Scalar> Vector<T> {
 
 	let mut sum = self.0[0] * other.0[0];
 	for i in 1..self.0.len() {
-	  sum = sum + (self.0[i] + other.0[i]);
+	  sum = sum + (self.0[i] * other.0[i]);
 	}
 	return Some(sum);	
     }
