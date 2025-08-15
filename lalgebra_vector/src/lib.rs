@@ -1,5 +1,6 @@
 pub use lalgebra_scalar::Scalar;
 use std::ops::Add;
+use std::fmt::Debug;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Vector<T: Scalar>(pub Vec<T>);
@@ -27,11 +28,11 @@ impl<T: Scalar> Vector<T> {
     
     pub fn dot(&self, other: &Self) -> Option<T> {
 	if self.0.len() != other.0.len() { return None; }
-	if self.0.is_empty() {return Some(T::zero()); }
+	if self.0.is_empty() {return None; }
 
-	let mut sum: <T: Scalar>  = T::zero();
-	for i in 0..self.0.len() {
-	  sum = sum + self.0[i] + other.0[i];
+	let mut sum = self.0[0] * other.0[0];
+	for i in 1..self.0.len() {
+	  sum = sum + (self.0[i] + other.0[i]);
 	}
 	return Some(sum);	
     }
