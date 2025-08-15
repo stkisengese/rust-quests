@@ -9,7 +9,6 @@ pub trait Scalar:
     	Sized +
     	Copy +
 	Clone +
-	Eq +
 	PartialEq +
 	Debug +
     	'static				
