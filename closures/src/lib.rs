@@ -1,4 +1,3 @@
 pub fn first_fifty_even_square() -> Vec<i32> {
-	(1..=50).map(|x| (x as i32 *2).pow(2)).collect()
+    (2..=100).step_by(2).map(|x| x * x).collect()
 }
-
