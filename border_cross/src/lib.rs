@@ -21,12 +21,21 @@ pub trait Vehicle {
 }
 
 impl Vehicle for Truck<'_> {
+	fn model(&self) -> &str { self.model }
+	fn year(&self) -> u32 { self.year }
 }
 
 impl Vehicle for Car<'_> {
+	fn model(&self) -> &str { self.model}
+	fn year(&self) -> u32 {	self.year }
 }
 
-fn all_models(list: Vec<&Vehicle>) -> Vec<&str> {
+fn all_models(list: Vec<&dyn Vehicle>) -> Vec<&str> {
+	let mut models = Vec::new();
+	for vehicle in list {
+		models.push(vehicle.model());
+	}
+	models
 }
 
 #[cfg(test)]
@@ -35,7 +44,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let vehicles: Vec<Vehicle> = vec![
+        let vehicles: Vec<&dyn Vehicle> = vec![
 		&Car {
 			plate_nbr: "A3D5C7",
 			model: "Model 3",
@@ -50,7 +59,7 @@ mod tests {
 			load_tons: 40,
 		},
 	];
-	let result = all_models(vehicles));
+	let result = all_models(vehicles);
         assert_eq!(result, ["Model 3", "Ranger"]);
     }
 }
