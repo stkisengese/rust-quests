@@ -1,5 +1,13 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+#[derive(Debug)]
+pub struct Person{
+	pub name: &str,
+	pub age: u8,
+}
+
+impl Person {
+	pub fn new(name: &str) -> Person {
+		Person{ name, age: 0 }
+	}
 }
 
 #[cfg(test)]
@@ -8,7 +16,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+        let person = Person::new("Leo");
+        assert_eq!(person, Person{name: "Leo", age: 0 });
     }
 }
