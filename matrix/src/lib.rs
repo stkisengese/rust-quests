@@ -9,6 +9,7 @@ impl <T: Scalar<Item = T> + Default> Matrix<T> {
 	}
 
 	pub fn zero(row: usize, col: usize) -> Matrix<T> {
+        Matrix(vec![vec![T::zero(); col]; row])
 	}
 
 	pub fn identity(n: usize) -> Matrix<T> {
