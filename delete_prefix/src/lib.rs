@@ -1,5 +1,5 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+pub fn delete_prefix(prefix: &str, s: &str) -> Option<&str> {
+    prefix.strip_prefix()
 }
 
 #[cfg(test)]
@@ -8,7 +8,10 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+        let result = delete_prefix("ab", "abcdefghijklmnop");
+	let result2 = delete_prefix("x", "abcdefghijklmnop");
+ 
+       assert_eq!(result, Some("cdefghijklmnop"));
+ 	assert_eq!(result2, None);  
+ }
 }
