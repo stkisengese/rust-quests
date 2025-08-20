@@ -1,14 +1,16 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+pub use lalgebra_scalar::Scalar;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
+pub struct Matrix<T>(pub Vec<Vec<T>>);
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+impl <T: Scalar<Item = T> + Default> Matrix<T> {
+	pub fn new() -> Matrix<T> {
+        Matrix(vec![vec![T::default()]])
+	}
+
+	pub fn zero(row: usize, col: usize) -> Matrix<T> {
+	}
+
+	pub fn identity(n: usize) -> Matrix<T> {
+	}
 }
