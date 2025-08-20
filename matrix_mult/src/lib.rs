@@ -2,7 +2,7 @@ pub use lalgebra_scalar::Scalar;
 pub use std::ops::{Mul, Add, Sub, Div};
 
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Matrix<T>(pub Vec<Vec<T>>);
 
 impl<T: Scalar<Item = T>> Mul for Matrix<T> {
