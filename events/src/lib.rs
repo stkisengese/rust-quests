@@ -1,5 +1,5 @@
-pub use chrono::Duration;
-pub use colored::*;
+use chrono::Duration;
+use colored::*;
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum Position {
