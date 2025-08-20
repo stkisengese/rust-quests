@@ -36,6 +36,16 @@ impl<T: Clone> Matrix<T> {
        self.0[0].len()
 	}
 
+	pub fn number_of_rows(&self) -> usize {
+         self.0.len()
+	}
+
+	pub fn row(&self, n: usize) -> Vec<T> {
+        if n >= self.number_of_rows() {
+            return vec![];
+        }
+        self.0[n].clone()
+	}
 
 	pub fn col(&self, n: usize) -> Vec<T> {
         if n >= self.number_of_cols() {
