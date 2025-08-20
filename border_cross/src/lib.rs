@@ -30,7 +30,7 @@ impl Vehicle for Car<'_> {
 	fn year(&self) -> u32 {	self.year }
 }
 
-fn all_models(list: Vec<&dyn Vehicle>) -> Vec<&str> {
+pub fn all_models(list: Vec<&dyn Vehicle>) -> Vec<&str> {
 	let mut models = Vec::new();
 	for vehicle in list {
 		models.push(vehicle.model());
