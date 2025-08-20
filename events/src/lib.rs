@@ -1,14 +1,40 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+pub use chrono::Duration;
+pub use colored::*;
+
+#[derive(Debug, Eq, PartialEq)]
+pub enum Position {
+	Top,
+	Bottom,
+	Center,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[derive(Debug, Eq, PartialEq)]
+ pub struct Notification {
+	pub size: u32,
+	pub color: (u8, u8, u8),
+	pub position: Position,
+	pub content: String,
+}
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+#[derive(Debug)]
+pub enum Event<'a> {
+	Remainder(&'a str),
+	Registration(Duration),
+	Appointment(&'a str),
+	Holiday,
+}
+
+use std::fmt;
+
+impl fmt::Display for Notification {
+    pub fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), Error> {
+        
     }
+}
+
+use Event::*;
+
+impl Event {
+	pub fn notify(&self) -> Notification {
+	}
 }
