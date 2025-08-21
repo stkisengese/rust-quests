@@ -18,11 +18,15 @@ pub struct Cart {
 impl Cart {
     pub fn new() -> Cart { Cart::default() }
     pub fn insert_item(&mut self, s: &Store, ele: String) {
-	for product in s.products.iter() {
-	    if product.0 == ele {
-	    	self.items.push(product.clone());
-	    }
-	}
+//	for product in s.products.iter() {
+//	    if product.0 == ele {
+//	    	self.items.push(product.clone());
+//	    }
+//	}
+	s.products
+		.iter()
+		.find(|(name, _)| *name == ele)
+		.map(|(_, price)| self.items.push((ele, *price)));
    }
 
     pub fn generate_receipt(&mut self) -> Vec<f32> {
