@@ -1,5 +1,9 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+pub fn add_curry(t: i32) -> impl Fn(i32) -> i32 {
+    move |x| t + x
+}
+
+pub fn twice(f: impl Fn(i32) -> i32) -> impl Fn(i32) -> i32 {
+    move |x| f(f(x))
 }
 
 #[cfg(test)]
@@ -8,7 +12,9 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+ 	let add5 = add_curry(5);
+        assert_eq!(add5(10), 15);
+        assert_eq!(add5(0), 5);
+        assert_eq!(add5(-5), 0);        
     }
 }
