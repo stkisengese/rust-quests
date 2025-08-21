@@ -12,7 +12,11 @@ impl<'a> Numbers<'a> {
 
     pub fn highest(&self) -> Option<u32> { self.numbers.iter().max().copied() }
 
-    pub fn highest_three(&self) -> Vec<u32> { Vec::new() }
+    pub fn highest_three(&self) -> Vec<u32> {
+    	let mut nums = self.numbers.to_vec();
+    	nums.sort_unstable_by(|a, b| b.cmp(a)); // Sort descending
+	nums.into_iter().take(3).collect()
+    }
 }
 
 #[cfg(test)]
@@ -21,7 +25,8 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let result = add(2, 2);
+        let expected = [30, 500, 20, 70];
+    	let n = Numbers::new(&expected);
         assert_eq!(n.list(), [30, 500, 20, 70]);
 	assert_eq!(n.highest(), Some(500));
 	assert_eq!(n.latest(), Some(70));
