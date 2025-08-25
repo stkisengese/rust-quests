@@ -7,7 +7,7 @@ impl Iterator for RomanNumber {
         let mut value: u32 = self.to_u32();
         value += 1;
         *self = RomanNumber::from(value);
-        Some(*self)
+        Some(self.clone())
     }
 }
 
