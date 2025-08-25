@@ -1,5 +1,14 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+use roman_numbers::RomanNumber;
+
+impl Iterator for RomanNumber {
+    type Item = RomanNumber;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let mut value: u32 = self.to_u32();
+        value += 1;
+        *self = RomanNumber::from(value);
+        Some(*self)
+    }
 }
 
 #[cfg(test)]
@@ -8,7 +17,8 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+        let mut number = RomanNumber::from(15);
+        assert_eq!(number, RomanNumber([X, V]));
+        assert_eq!(number.next(), Some(RomanNumber([X, V, I])));
     }
 }
