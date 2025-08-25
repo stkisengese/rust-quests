@@ -1,5 +1,9 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+use std::collections::HashMap;
+use std::hash::Hash;
+use std::cmp::Eq;
+
+pub fn slices_to_map<'a, T: Eq + Hash , U>(slice1: &'a [T], slice2: &'a [U]) -> HashMap<&'a T, &'a U> {
+    slice1.iter().zip(slice2.iter()).collect::<HashMap<_, _>>()
 }
 
 #[cfg(test)]
@@ -8,7 +12,9 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+	let keys = ["Olivia", "Liam", "Emma", "Noah", "James"];
+	let values = [1, 3, 23, 5, 2];
+	let result = slices_to_map(&keys, &values);
+        assert_eq!(result, {"James": 2, "Liam": 3, "Emma": 23, "Noah": 5, "Olivia": 1});
     }
 }
