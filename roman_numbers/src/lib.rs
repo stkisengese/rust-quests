@@ -49,6 +49,39 @@ impl From<u32> for RomanNumber {
     }
 }
 
+impl RomanNumber {
+    // Helper function to convert RomanNumber back to u32
+    pub fn to_u32(&self) -> u32 {
+        let mapping = [
+            (M, 1000),
+            (D, 500),
+            (C, 100),
+            (L, 50),
+            (X, 10),
+            (V, 5),
+            (I, 1),
+            (Nulla, 0),
+        ];
+
+        let mut total = 0;
+        let mut prev_value = 0;
+
+        for digit in self.0.iter().rev() {
+            let value = mapping.iter().find(|(d, _)| *d == *digit).unwrap().1;
+
+            if value < prev_value {
+                total -= value;
+            } else {
+                total += value;
+            }
+
+            prev_value = value;
+        }
+
+        total
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
